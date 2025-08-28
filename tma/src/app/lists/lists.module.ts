@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ListsPageRoutingModule } from './lists-routing.module';
 
 import { ListsPage } from './lists.page';
+import { ListItemComponent } from './list-item/list-item.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { ListsPage } from './lists.page';
     IonicModule,
     ListsPageRoutingModule
   ],
-  declarations: [ListsPage]
+  declarations: [ListsPage, ListItemComponent]
 })
 export class ListsPageModule {}
