@@ -8,5 +8,5 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
+  <app-task-item *ngFor="let task of tasks" [taskItem]="task"></app-task-item>
 </ion-content>

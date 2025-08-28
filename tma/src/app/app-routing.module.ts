@@ -4,7 +4,17 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'tasks',
-    loadChildren: () => import('./tasks/tasks.module').then( m => m.TasksPageModule)
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./tasks/tasks.module').then( m => m.TasksPageModule)
+      },
+      {
+        path: ':taskId',
+        loadChildren: () => import('./tasks/task-details/task-details.module').then( m => m.TaskDetailsPageModule)
+      }
+    ]
+    
   },
   {
     path: '',
