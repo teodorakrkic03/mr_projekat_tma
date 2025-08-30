@@ -13,30 +13,28 @@ import { ListOrder } from '../models/list-order.model';
 })
 export class ListsPage implements OnInit {
   lists: List[] = [];
-  tasks: Task[] = [];
-  listOrder: ListOrder[] = [
-    {
-      listId:'l1',
-      taskId:'t1',
-      order:1
-    },
-    {
-      listId:'l1',
-      taskId:'t2',
-      order:2
-    },
-    {
-      listId:'l2',
-      taskId:'t2',
-      order:1
-    },
-  ];
+  loading = true;
+  errorMessage: string | null = null;
 
-  constructor(private listsService:Lists, private tasksService:Tasks) { }
+  constructor(private listsService: Lists) { }
 
   ngOnInit() {
-    this.lists = this.listsService.getLists();
-    this.tasks = this.tasksService.getTasks();
+    this.fetchLists();
+  }
+
+  fetchLists() {
+    this.loading = true;
+    this.listsService.getLists().subscribe({
+      next: (lists) => {
+        console.log('API response:', lists);
+        this.lists = lists.task_lists;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Failed to load lists';
+        this.loading = false;
+      }
+    });
   }
 
 }

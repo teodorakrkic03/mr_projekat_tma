@@ -17,9 +17,17 @@ class TaskListResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'=>$this->resource->id,
-            'name'=>$this->resource->name,
-            'user'=>new UserResource($this->resource->user)
+            'id'   => $this->id,
+            'name' => $this->name,
+            'user_id' => $this->user_id,
+            'tasks' => $this->tasks->map(function ($task) {
+                return [
+                    'task_list_id' => $this->id,
+                    'task_id' => $task->id,
+                    'num' => $task->pivot->num,
+                    'task' => new TaskResource($task),
+                ];
+            }),
         ];
     }
 }

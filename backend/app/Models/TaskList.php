@@ -24,4 +24,9 @@ class TaskList extends Model
         return $this->belongsToMany(Task::class,'list_order','task_list_id','task_id')->withPivot('num')->orderBy('num');
     }
 
+    public function listOrders()
+    {
+        return $this->hasMany(ListOrder::class, 'task_list_id');
+    }
+
 }

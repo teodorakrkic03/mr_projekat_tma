@@ -1,9 +1,10 @@
 export interface Task {
-    id:string;
-    title:string;
-    description:string;
-    dueDate:Date;
-    status:string;
-    priority:string;
-    category:string;
+    id:number;
+    name:string;
+    description?: string;
+    due_date?: string;
+    category?: any;
+    status: 'Not started' | 'Active' | 'Finished';
+    priority: 'low' | 'medium' | 'high';
+    user_id: number;
 }

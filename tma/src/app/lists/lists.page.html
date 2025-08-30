@@ -8,5 +8,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <app-list-item *ngFor="let list of lists" [listItem]="list" [tasks]="tasks" [listOrder]="listOrder"></app-list-item>
+  <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+  <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+  <app-list-item *ngFor="let list of lists" [listItem]="list"></app-list-item>
 </ion-content>

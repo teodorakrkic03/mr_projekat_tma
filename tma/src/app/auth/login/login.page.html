@@ -8,24 +8,28 @@
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <ion-grid>
       <ion-row>
-        <ion-col size="8" offset="2">
+        <ion-col sizeSm="8" offsetSm="2">
           <ion-item>
-            <ion-label position="stacked">Username</ion-label>
-            <ion-input type="text" formControlName="username" placeholder="Enter your username"></ion-input>
+            <ion-label position="floating">Username</ion-label>
+            <ion-input type="text" formControlName="username"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label position="stacked">Password</ion-label>
-            <ion-input type="password" formControlName="password" placeholder="Enter your password"></ion-input>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
           </ion-item>
-          <ion-button type="submit" expand="block" shape="round">
-            {{ isSubmitting ? 'Logging in...' : 'Login' }}
-          </ion-button>
-
-          <ion-text color="danger" *ngIf="errorMessage">
-            {{ errorMessage }}
-          </ion-text>
-        </ion-col>
+          </ion-col>
       </ion-row>
+          <ion-row>
+            <ion-col size="8" offset="2">
+              <ion-button class="ion-margin-top" type="submit" expand="block" shape="round">
+                {{ isSubmitting ? 'Logging in...' : 'Login' }}
+              </ion-button>
+
+              <ion-text color="danger" *ngIf="errorMessage">
+                {{ errorMessage }}
+              </ion-text>
+            </ion-col>
+          </ion-row>
     </ion-grid>
   </form>
 </ion-content>

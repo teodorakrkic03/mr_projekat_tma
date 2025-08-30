@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { List } from '../../models/list.model';
-import { ListOrder } from 'src/app/models/list-order.model';
 import { Task } from 'src/app/models/task.model';
 
 @Component({
@@ -11,20 +10,16 @@ import { Task } from 'src/app/models/task.model';
 })
 export class ListItemComponent  implements OnInit {
   @Input() listItem!: List;
-  @Input() tasks!: Task[];
-  @Input() listOrder!: ListOrder[];
-
   orderedTasks: Task[] = [];
+
   constructor() { }
 
   ngOnInit() {
-    const orders = this.listOrder
-      .filter(o => o.listId === this.listItem.id)
-      .sort((a, b) => a.order - b.order);
-
-    this.orderedTasks = orders
-      .map(o => this.tasks.find(t => t.id === o.taskId)!)
-      .filter(Boolean);
+    if (this.listItem.tasks) {
+      this.orderedTasks = this.listItem.tasks
+        .sort((a, b) => a.num - b.num) // sortiramo po redosledu
+        .map(o => o.task); // izvučemo pravi task iz resource polja
+    }
   }
 
 }

@@ -70,7 +70,8 @@ class TaskController extends Controller
         if($task->user_id !== Auth::id()){
             return response()->json(['message'=>'Task not found']);
         }
-        return new TaskResource($task);
+        return response()->json(['message'=>'Task found!', 
+                                'task' => new TaskResource($task)]);
     }
 
     public function filter(Request $request){

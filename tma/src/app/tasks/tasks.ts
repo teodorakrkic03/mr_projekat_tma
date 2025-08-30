@@ -1,35 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Task } from '../models/task.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Auth } from '../auth/auth';
+import { map, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class Tasks {
-  private tasks: Task[] = [
-    {
-      id:'t1',
-      title:'Zadatak 1',
-      description: 'Ovo je opis zadatka 1',
-      dueDate: new Date(2025,10,24),
-      status: 'Not started',
-      priority: 'Low',
-      category: 'Project'
-    },
-    {
-      id:'t2',
-      title:'Zadatak 2',
-      description: 'Ovo je opis zadatka 2',
-      dueDate: new Date(2025,9,20),
-      status: 'Active',
-      priority: 'Medium',
-      category: 'Maintenance'
-    }
-]
+  private apiUrl = 'http://127.0.0.1:8000/api';
+  
+  constructor(private http: HttpClient, private auth: Auth){}
 
-  getTasks(){
-    return this.tasks;
+  getTasks(search?: string): Observable<Task[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.auth.getToken()}`
+    });
+
+    let url = `${this.apiUrl}/tasks`;
+    if(search){
+      url += `?search=${search}`;
+    }
+
+    return this.http.get<{tasks: Task[]}>(url, { headers }).pipe(
+        map(res => res.tasks)
+      );
   }
 
-  getTask(taskId:string){
-    return this.tasks.find(t => t.id === taskId);
+  getTask(taskId: string | number) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.auth.getToken()}`
+    });
+
+    return this.http.get<{task: Task}>(`${this.apiUrl}/tasks/${taskId}`, { headers }).pipe(
+      map(res => res.task)
+    );
   }
 }
