@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TaskList>
  */
-class TaskListFactory extends Factory
+class TaskFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,6 +18,8 @@ class TaskListFactory extends Factory
     {
         return [
             'name'=>fake()->word(),
+            'description'=>fake()->sentence(),
+            'due_date'=>fake()->date(),
         ];
     }
 }

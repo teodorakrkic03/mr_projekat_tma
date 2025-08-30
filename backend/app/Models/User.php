@@ -16,17 +16,11 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'role',
-        'is_verified'
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
-    ];
-
-    protected $casts = [
-        'is_verified' => 'boolean',
     ];
 
     protected function casts(): array

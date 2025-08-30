@@ -18,7 +18,6 @@ class CategoryController extends Controller
     public function store(Request $request){
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:255',
-            'tag' => 'required|string|max:10'
         ]);
 
         if($validator->fails()){
@@ -27,7 +26,6 @@ class CategoryController extends Controller
 
         $category = Category::create([
             'name' => $request->name,
-            'tag' => $request->tag,
             'user_id' => Auth::user()->id
         ]);
 

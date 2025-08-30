@@ -48,15 +48,15 @@ class DatabaseSeeder extends Seeder
             'name'=>'Finished',
         ]);
 
-        User::factory()->create([
-            'first_name' => 'Admin',
-            'last_name'  => 'User',
-            'email'      => 'admin@example.com',
-            'username'   => 'admin',
-            'password'   => Hash::make('admin123'),
-            'role'       => 'admin',
-            'is_verified'=> true,
-        ]);
+        // User::factory()->create([
+        //     'first_name' => 'Admin',
+        //     'last_name'  => 'User',
+        //     'email'      => 'admin@example.com',
+        //     'username'   => 'admin',
+        //     'password'   => Hash::make('admin123'),
+        //     'role'       => 'admin',
+        //     'is_verified'=> true,
+        // ]);
 
         User::factory()->create([
             'first_name' => 'Ana',
@@ -64,8 +64,6 @@ class DatabaseSeeder extends Seeder
             'email'      => 'ana@gmail.com',
             'username'   => 'ana123',
             'password'   => Hash::make('ana123'),
-            'role'       => 'user',
-            'is_verified'=> false,
         ]);
 
         User::factory(5)->create()->each(function ($user) {

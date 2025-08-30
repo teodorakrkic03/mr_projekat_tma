@@ -18,20 +18,16 @@ class TaskController extends Controller
         $user = Auth::user();
         
         $search = $request->query('search');
-        $perPage = (int) $request->query('per_page', 9);
 
         $query = Task::where('user_id',$user->id);
         if($search){
             $query->where('name','like',"%{$search}%");
         }
 
-        $tasks = $query->paginate($perPage);
+        $tasks = $query->get();
         
         return response()->json([
             'tasks' => TaskResource::collection($tasks),
-            'current_page' => $tasks -> currentPage(),
-            'total' => $tasks -> total(),
-            'last_page' => $tasks -> lastPage()
         ]);   
     }
 
@@ -42,8 +38,6 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('create', Task::class);
-
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:255',
             'description' => 'string|max:255|nullable',
@@ -105,13 +99,9 @@ class TaskController extends Controller
             $query->where('category_id',$request->category_id);
         }
 
-        $perPage = (int) $request->query('per_page', 9);
-        $tasks = $query->paginate($perPage);
+        $tasks = $query->get();
         return response()->json([
             'tasks' => TaskResource::collection($tasks),
-            'current_page' => $tasks -> currentPage(),
-            'total' => $tasks -> total(),
-            'last_page' => $tasks -> lastPage()
         ]);  
     }
 
@@ -122,8 +112,6 @@ class TaskController extends Controller
 
     public function update(Request $request, Task $task)
     {
-        $this->authorize('update',$task);
-
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:255',
             'description' => 'string|max:255|nullable',

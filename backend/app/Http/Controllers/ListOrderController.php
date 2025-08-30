@@ -53,7 +53,6 @@ class ListOrderController extends Controller
         }
 
         $list = TaskList::findOrFail($request->task_list_id);
-        $this -> authorize('update',$list);
 
         $maxNum = $list->tasks()->max('num') ?? 0;
         
@@ -69,7 +68,6 @@ class ListOrderController extends Controller
     public function removeTask($task_list_id,$task_id){
 
         $list = TaskList::findOrFail($task_list_id);
-        $this->authorize('update',$list);
 
         if(!$list->tasks()->where('task_id',$task_id)->exists()){
             return response()->json(['message'=>'Task not found']);

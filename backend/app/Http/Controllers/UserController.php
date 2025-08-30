@@ -40,7 +40,6 @@ class UserController extends Controller
             'last_name'=>'required|regex:/[A-Z][a-z]+/|max:255',
             'email'=>['required','string','email',Rule::unique('users')->ignore($user->id)],
             'username'=>['required','string','max:255',Rule::unique('users')->ignore($user->id)],
-            'is_verified' => 'boolean'
         ]);
 
         if($validate->fails()){
@@ -51,7 +50,6 @@ class UserController extends Controller
         $user->last_name = $request->last_name;
         $user->username = $request->username;
         $user->email = $request->email;
-        $user->is_verified = $request->is_verified;
 
         $user->save();
 
@@ -59,14 +57,10 @@ class UserController extends Controller
                                  'user' =>  new UserResource($user)]);
     }
 
-    public function destroy($id=null)
+    public function destroy()
     {
         $current_user = Auth::user();
-        if($current_user->role === 'admin' && $id){
-            $user = User::findOrFail($id);
-        }else{
-            $user = User::findOrFail($current_user->id);
-        }
+        $user = User::findOrFail($current_user->id);
        
         $user->delete();
         return response()->json(['message' => 'User has been deleted']);

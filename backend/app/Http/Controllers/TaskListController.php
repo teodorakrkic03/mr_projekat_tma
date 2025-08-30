@@ -12,19 +12,13 @@ class TaskListController extends Controller
 {
     public function index(Request $request)
     {
-        $this->authorize('viewAny',TaskList::class);
-
         $user = Auth::user();
         $query = TaskList::where('user_id',$user->id);
 
-        $perPage = (int) $request->query('per_page', 6);
-        $tasks = $query->paginate($perPage);
+        $tasks = $query->get();
      
         return response()->json([
-            'task_lists' => TaskListResource::collection($tasks),
-            'current_page' => $tasks -> currentPage(),
-            'total' => $tasks -> total(),
-            'last_page' => $tasks -> lastPage()
+            'task_lists' => TaskListResource::collection($tasks)
         ]); 
     }
 
@@ -39,7 +33,6 @@ class TaskListController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('viewAny',TaskList::class);
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:255',
         ]);
@@ -60,7 +53,6 @@ class TaskListController extends Controller
     public function update(Request $request, $task_list_id)
     {
         $task_list = TaskList::find($task_list_id);
-        $this->authorize('update',$task_list);
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:255',
         ]);
@@ -80,7 +72,6 @@ class TaskListController extends Controller
     public function destroy($task_list_id)
     {
         $task_list = TaskList::find($task_list_id);
-        $this->authorize('delete',$task_list);
         if(!$task_list || Auth::id()!==$task_list->user_id){
             return response()->json(['message'=>'Error']);
         }

@@ -21,7 +21,6 @@ class CategoryResource extends JsonResource
         return[
             'id'=>$this->id,
             'name'=>$this->resource->name,
-            'tag'=>$this->resource->tag,
             'user'=>new UserResource($this->resource->user)
         ];
     }

@@ -14,12 +14,9 @@ return new class extends Migration
         Schema::create('themes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('tag');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             
-
             $table->unique(['user_id','name']);
-            $table->unique(['user_id','tag']);
         });
     }
 
