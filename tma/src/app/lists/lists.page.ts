@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { List } from '../models/list.model';
-import { Task } from '../models/task.model';
 import { Lists } from './lists';
-import { Tasks } from '../tasks/tasks';
-import { ListOrder } from '../models/list-order.model';
 
 @Component({
   selector: 'app-lists',
