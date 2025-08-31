@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Tasks } from '../tasks';
+import { TasksService } from '../tasks';
 import { Task } from '../../models/task.model';
+import { ModalController } from '@ionic/angular';
+import { TaskModalComponent } from '../task-modal/task-modal.component';
 
 @Component({
   selector: 'app-task-details',
@@ -16,8 +18,9 @@ export class TaskDetailsPage implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute, 
-    private tasksService: Tasks,
-    private router: Router
+    private tasksService: TasksService,
+    private router: Router,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -39,6 +42,31 @@ export class TaskDetailsPage implements OnInit {
           this.loading = false;
         }
       });
+    });
+  }
+
+  async openTaskModal(task?:Task){
+      const modal = await this.modalCtrl.create({
+        component: TaskModalComponent,
+        componentProps:{ task }
+      });
+
+      modal.onDidDismiss().then(({ data }) => {
+        if(data){
+          this.loadedTask = data;
+        }
+      });
+  
+      await modal.present();
+  }
+
+  onDelete(taskId?:number){
+    if(!taskId) return;
+    this.tasksService.deleteTask(taskId).subscribe({
+      next: () => {
+        this.router.navigate(['/tasks']);
+      },
+      error: (err) => console.error('Delete failed', err)
     });
   }
 

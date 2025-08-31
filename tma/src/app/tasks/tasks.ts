@@ -6,33 +6,40 @@ import { map, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class Tasks {
-  private apiUrl = 'http://127.0.0.1:8000/api';
+export class TasksService {
+  private apiUrl = 'http://127.0.0.1:8000/api/tasks';
   
   constructor(private http: HttpClient, private auth: Auth){}
 
-  getTasks(search?: string): Observable<Task[]> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.auth.getToken()}`
-    });
+  private getHeaders(): { headers: HttpHeaders } {
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${this.auth.getToken()}`
+      })
+    };
+  }
 
-    let url = `${this.apiUrl}/tasks`;
-    if(search){
-      url += `?search=${search}`;
-    }
-
-    return this.http.get<{tasks: Task[]}>(url, { headers }).pipe(
-        map(res => res.tasks)
-      );
+  getTasks(): Observable<Task[]> {
+    return this.http.get<{tasks: Task[]}>(this.apiUrl, this.getHeaders()).pipe(
+      map(res => res.tasks)
+    );
   }
 
   getTask(taskId: string | number) {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.auth.getToken()}`
-    });
-
-    return this.http.get<{task: Task}>(`${this.apiUrl}/tasks/${taskId}`, { headers }).pipe(
+    return this.http.get<{task: Task}>(`${this.apiUrl}/${taskId}`, this.getHeaders()).pipe(
       map(res => res.task)
     );
+  }
+
+  addTask(taskData: Partial<Task>): Observable<any> {
+    return this.http.post(this.apiUrl, taskData, this.getHeaders());
+  }
+
+  updateTask(taskId: number, taskData: Partial<Task>): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${taskId}`, taskData, this.getHeaders());
+  }
+
+  deleteTask(taskId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${taskId}`, this.getHeaders());
   }
 }

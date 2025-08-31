@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Tasks } from './tasks';
+import { TasksService } from './tasks';
 import { Task } from '../models/task.model';
+import { ModalController } from '@ionic/angular';
+import { TaskModalComponent } from './task-modal/task-modal.component';
 @Component({
   selector: 'app-tasks',
   standalone: false,
@@ -12,9 +14,13 @@ export class TasksPage implements OnInit {
   loading = true;
   errorMessage: string | null = null;
 
-  constructor(private tasksService:Tasks) { }
+  constructor(private tasksService:TasksService, private modalCtrl:ModalController) { }
 
   ngOnInit() {
+    this.fetchTasks();
+  }
+
+  ionViewWillEnter(){
     this.fetchTasks();
   }
 
@@ -30,6 +36,26 @@ export class TasksPage implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  async openTaskModal(task?:Task){
+    const modal = await this.modalCtrl.create({
+      component: TaskModalComponent,
+      componentProps:{ task }
+    });
+
+    modal.onDidDismiss().then(({ data }) => {
+      if(data){
+        if(task){
+          const index = this.tasks.findIndex(t => t.id === task.id);
+          if (index > -1) this.tasks[index] = data;
+        } else{
+          this.tasks.push(data);
+        }
+      }
+    });
+
+    await modal.present();
   }
 
 }

@@ -8,6 +8,7 @@ import { TasksPageRoutingModule } from './tasks-routing.module';
 
 import { TasksPage } from './tasks.page';
 import { TaskItemComponent } from './task-item/task-item.component';
+import { TaskModalComponent } from './task-modal/task-modal.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { TaskItemComponent } from './task-item/task-item.component';
     IonicModule,
     TasksPageRoutingModule
   ],
-  declarations: [TasksPage, TaskItemComponent]
+  declarations: [TasksPage, TaskItemComponent,TaskModalComponent]
 })
 export class TasksPageModule {}

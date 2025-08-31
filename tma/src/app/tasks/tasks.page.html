@@ -11,4 +11,9 @@
   <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
   <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
   <app-task-item *ngFor="let task of tasks" [taskItem]="task"></app-task-item>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="openTaskModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

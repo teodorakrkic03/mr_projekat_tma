@@ -4,10 +4,10 @@
       <ion-back-button defaultHref="tasks"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="primary">
-      <ion-button>
+      <ion-button (click)="openTaskModal(loadedTask)">
        <ion-icon name="create-outline"></ion-icon>
       </ion-button>
-      <ion-button>
+      <ion-button (click)="onDelete(loadedTask?.id)">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
