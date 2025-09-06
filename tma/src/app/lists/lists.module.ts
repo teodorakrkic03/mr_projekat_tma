@@ -8,6 +8,7 @@ import { ListsPageRoutingModule } from './lists-routing.module';
 
 import { ListsPage } from './lists.page';
 import { ListItemComponent } from './list-item/list-item.component';
+import { ListModalComponent } from './list-modal/list-modal.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { ListItemComponent } from './list-item/list-item.component';
     IonicModule,
     ListsPageRoutingModule
   ],
-  declarations: [ListsPage, ListItemComponent]
+  declarations: [ListsPage, ListItemComponent, ListModalComponent]
 })
 export class ListsPageModule {}

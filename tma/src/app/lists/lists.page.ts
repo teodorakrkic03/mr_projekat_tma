@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { List } from '../models/list.model';
-import { Lists } from './lists';
+import { ListsService } from './lists';
+import { ModalController } from '@ionic/angular';
+import { ListModalComponent } from './list-modal/list-modal.component';
 
 @Component({
   selector: 'app-lists',
@@ -13,9 +15,13 @@ export class ListsPage implements OnInit {
   loading = true;
   errorMessage: string | null = null;
 
-  constructor(private listsService: Lists) { }
+  constructor(private listsService: ListsService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
+    this.fetchLists();
+  }
+
+  ionViewWillEnter(){
     this.fetchLists();
   }
 
@@ -23,7 +29,6 @@ export class ListsPage implements OnInit {
     this.loading = true;
     this.listsService.getLists().subscribe({
       next: (lists) => {
-        console.log('API response:', lists);
         this.lists = lists.task_lists;
         this.loading = false;
       },
@@ -32,6 +37,20 @@ export class ListsPage implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  async openListModal() {
+    const modal = await this.modalCtrl.create({
+      component: ListModalComponent
+    });
+
+    modal.onDidDismiss().then(({ data }) => {
+      if (data) {
+        this.lists.push(data);
+      }
+    });
+
+    await modal.present();
   }
 
 }

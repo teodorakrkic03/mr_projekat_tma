@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="lists"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button (click)="openListModal(loadedList)">
+       <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="onDeleteList()">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{loadedList?.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+  <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+
+  <ion-list *ngIf="loadedList && loadedList.tasks.length > 0">
+    <ion-item *ngFor="let taskInList of loadedList.tasks">
+      <ion-label>
+        <h2>{{ taskInList.num }}.{{ taskInList.task.name }}</h2>
+        <p>{{ taskInList.task.description }}</p>
+        <p>Status: {{ taskInList.task.status }}</p>
+        <p>Priority: {{ taskInList.task.priority }}</p>
+        <p *ngIf="taskInList.task.due_date">Due: {{ taskInList.task.due_date | date }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-text color="medium" *ngIf="loadedList && loadedList.tasks.length === 0">
+    No tasks in this list yet.
+  </ion-text>
+
+</ion-content>

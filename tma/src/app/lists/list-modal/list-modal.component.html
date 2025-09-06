@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ list ? 'Edit List' : 'New List' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cancel</ion-button>
+      <ion-button (click)="saveList()">
+        {{ list ? 'Save' : 'Create' }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">List Name</ion-label>
+      <ion-input [(ngModel)]="form.name"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ng-container *ngIf="list">
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Tasks in this list</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let t of form.tasks">
+        <ion-label>{{ t.task.name }}</ion-label>
+        <ion-button fill="clear" color="danger" (click)="removeTaskFromList(t.task_id)">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Add Tasks</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let task of allTasks">
+        <ion-label>{{ task.name }}</ion-label>
+        <ion-button fill="clear" (click)="addTaskToList(task)">
+          <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+</ion-content>

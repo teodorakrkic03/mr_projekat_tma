@@ -40,11 +40,20 @@ const routes: Routes = [
       },
       {
         path: 'lists',
-        loadChildren: () => import('./lists/lists.module').then( m => m.ListsPageModule)
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./lists/lists.module').then( m => m.ListsPageModule)
+          },
+          {
+            path: ':listId',
+            loadChildren: () => import('./lists/list-details/list-details.module').then( m => m.ListDetailsPageModule)
+          }
+        ]
+        
       }
     ]
   },
-  
   {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)

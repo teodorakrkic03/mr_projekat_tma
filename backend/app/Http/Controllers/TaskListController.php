@@ -28,7 +28,9 @@ class TaskListController extends Controller
             return response()->json(['message'=>'Task list not found']);
         }
 
-        return new TaskListResource($task_list);
+        return response()->json([
+            'task_list' => new TaskListResource($task_list)
+        ]); 
     }
 
     public function store(Request $request)
