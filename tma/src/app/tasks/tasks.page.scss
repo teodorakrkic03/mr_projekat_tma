@@ -1,0 +1,11 @@
+ion-content {
+  ion-searchbar {
+    --box-shadow: none;
+    padding: 8px 12px;
+  }
+  ion-fab-button {
+    --background: var(--ion-color-primary);
+    --border-radius: 12px;
+  }
+}
+

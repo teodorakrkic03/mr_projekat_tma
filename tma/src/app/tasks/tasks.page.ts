@@ -13,6 +13,7 @@ export class TasksPage implements OnInit {
   tasks: Task[] = [];
   loading = true;
   errorMessage: string | null = null;
+  private searchTerm: string = '';
 
   constructor(private tasksService:TasksService, private modalCtrl:ModalController) { }
 
@@ -26,7 +27,10 @@ export class TasksPage implements OnInit {
 
   fetchTasks() {
     this.loading = true;
-    this.tasksService.getTasks().subscribe({
+    const source$ = this.searchTerm
+      ? this.tasksService.searchTasks(this.searchTerm)
+      : this.tasksService.getTasks();
+    source$.subscribe({
       next: (tasks) => {
         this.tasks = tasks;
         this.loading = false;
@@ -36,6 +40,11 @@ export class TasksPage implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  onSearch(event: any){
+    this.searchTerm = (event.target?.value || '').trim();
+    this.fetchTasks();
   }
 
   async openTaskModal(task?:Task){

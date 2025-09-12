@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth/auth.guard';
 import { TabsPage } from './tabs/tabs.page';
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   {
     path:'',
     component: TabsPage,
+    canActivate: [AuthGuard],
     children:[
       {
         path: 'tasks',
@@ -37,6 +39,10 @@ const routes: Routes = [
             loadChildren: () => import('./tasks/task-details/task-details.module').then( m => m.TaskDetailsPageModule)
           }
         ]
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
       },
       {
         path: 'lists',
@@ -56,7 +62,8 @@ const routes: Routes = [
   },
   {
     path: 'tabs',
-    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
+    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule),
+    canActivate: [AuthGuard]
   },
 ];
 

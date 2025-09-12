@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+  </ion-header>
+
+<ion-content class="ion-padding">
+  <ion-spinner *ngIf="loading"></ion-spinner>
+
+  <div *ngIf="!loading">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <ion-item>
+        <ion-label position="stacked">First name</ion-label>
+        <ion-input formControlName="first_name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Last name</ion-label>
+        <ion-input formControlName="last_name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Username</ion-label>
+        <ion-input formControlName="username"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-button expand="block" type="submit">Save</ion-button>
+    </form>
+
+    <ion-button color="danger" expand="block" (click)="delete()">Delete account</ion-button>
+  </div>
+
+  <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+</ion-content>
+
+
+

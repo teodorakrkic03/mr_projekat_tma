@@ -1,0 +1,12 @@
+:root {
+  --ion-color-primary: #4f46e5;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-border-radius: 12px;
+}
+
+ion-card, ion-item, ion-button {
+  border-radius: var(--ion-border-radius);
+}
+
+
+
