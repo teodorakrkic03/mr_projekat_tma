@@ -26,10 +26,6 @@ Route::get('priorities', function(){
 Route::post('register',[AuthController::class,'register']);
 Route::post('login',[AuthController::class,'login']);
 
-//rute za resetovanje sifre
-Route::post('password/forgot',[PasswordController::class,'sendResetLink']);
-Route::post('password/reset',[PasswordController::class,'reset']);
-
 Route::group(['middleware'=> ['auth:sanctum']], function(){
     //rute za prikaz, azuriranje i brisanje korisnika
     Route::get('user', [UserController::class,'show']);
@@ -37,7 +33,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function(){
     Route::delete('user',[UserController::class,'destroy']);
 
     //ruta za filtriranje zadataka
-    Route::get('tasks/filter',[TaskController::class,'filter']);
+    Route::post('tasks/filter',[TaskController::class,'filter']);
     //rute za rad za zadacima
     Route::resource('tasks',TaskController::class)->only(['index','show','store','update','destroy']);
 

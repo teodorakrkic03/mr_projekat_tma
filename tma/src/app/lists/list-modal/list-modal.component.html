@@ -16,6 +16,7 @@
       <ion-label position="stacked">List Name</ion-label>
       <ion-input [(ngModel)]="form.name"></ion-input>
     </ion-item>
+    <ion-text color="danger" *ngIf="nameError">{{ nameError }}</ion-text>
   </ion-list>
 
   <ng-container *ngIf="list">

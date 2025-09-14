@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TasksService } from '../tasks';
 import { Task } from '../../models/task.model';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { TaskModalComponent } from '../task-modal/task-modal.component';
 
 @Component({
@@ -20,7 +20,8 @@ export class TaskDetailsPage implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private tasksService: TasksService,
     private router: Router,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
@@ -60,14 +61,29 @@ export class TaskDetailsPage implements OnInit {
       await modal.present();
   }
 
-  onDelete(taskId?:number){
-    if(!taskId) return;
-    this.tasksService.deleteTask(taskId).subscribe({
-      next: () => {
-        this.router.navigate(['/tasks']);
-      },
-      error: (err) => console.error('Delete failed', err)
+  async onDelete(taskId?:number){
+    if (!taskId) return;
+
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm delete',
+      message: 'Are you sure you want to delete this task?',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Delete',
+          handler: () => {
+            this.tasksService.deleteTask(taskId).subscribe({
+              next: () => {
+                this.router.navigate(['/tasks']);
+              },
+              error: (err) => console.error('Delete failed', err)
+            });
+          }
+        }
+      ]
     });
+
+    await alert.present();
   }
 
 }

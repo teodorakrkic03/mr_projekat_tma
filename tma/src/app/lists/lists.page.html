@@ -6,11 +6,14 @@
     <ion-title>Lists</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-toolbar>
+  <ion-searchbar placeholder="Search lists..." showCancelButton="focus" (ionInput)="handleSearch($event)"></ion-searchbar>
+</ion-toolbar>
 
 <ion-content [fullscreen]="true">
   <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
   <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
-  <app-list-item *ngFor="let list of lists" [listItem]="list"></app-list-item>
+  <app-list-item *ngFor="let list of filteredLists" [listItem]="list"></app-list-item>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="openListModal()">
       <ion-icon name="add"></ion-icon>

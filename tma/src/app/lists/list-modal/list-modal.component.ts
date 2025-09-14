@@ -20,6 +20,7 @@ export class ListModalComponent  implements OnInit {
   }
 
   allTasks: Task[] = [];
+  nameError: string | null = null;
 
   constructor(
     private modalCtrl: ModalController,
@@ -41,6 +42,13 @@ export class ListModalComponent  implements OnInit {
   }
 
   saveList(){
+    if (!this.form.name.trim()) {
+      this.nameError = 'Name is required';
+      return;
+    } else {
+      this.nameError = null;
+    }
+
     if (this.list) {
       this.listsService.updateList(this.list.id, { name: this.form.name }).subscribe({
         next: (res) => {
@@ -79,6 +87,10 @@ export class ListModalComponent  implements OnInit {
     this.listsService.removeTaskFromList(this.list.id, taskId).subscribe({
       next: () => {
         this.form.tasks = this.form.tasks.filter(t => t.task_id !== taskId);
+        this.form.tasks = this.form.tasks.map((t,index) => ({
+          ...t,
+          num: index+1
+        }));
       }
     });
   }

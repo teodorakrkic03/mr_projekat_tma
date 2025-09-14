@@ -8,49 +8,48 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item>
-      <ion-label position="stacked">Name</ion-label>
-      <ion-input [(ngModel)]="form.name"></ion-input>
-    </ion-item>
+  <form [formGroup]="form" (ngSubmit)="saveTask()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input formControlName="name"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="getError('name')">{{ getError('name') }}</ion-text>
 
-    <ion-item>
-      <ion-label position="stacked">Description</ion-label>
-      <ion-textarea [(ngModel)]="form.description"></ion-textarea>
-    </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Description</ion-label>
+        <ion-textarea formControlName="description"></ion-textarea>
+      </ion-item>
+      <ion-text color="danger" *ngIf="getError('description')">{{ getError('description') }}</ion-text>
 
-    <ion-item>
-      <ion-label position="stacked">Due date</ion-label>
-      <ion-datetime [(ngModel)]="form.due_date"></ion-datetime>
-    </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Due date</ion-label>
+        <ion-datetime formControlName="due_date"></ion-datetime>
+      </ion-item>
+      <ion-text color="danger" *ngIf="getError('due_date')">{{ getError('due_date') }}</ion-text>
 
-    <ion-item>
-      <ion-label>Category</ion-label>
-      <ion-select [(ngModel)]="form.category_id">
-        <ion-select-option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</ion-select-option>
-      </ion-select>
-    </ion-item>
+      <ion-item>
+        <ion-select formControlName="category_id" label="Category">
+          <ion-select-option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</ion-select-option>
+        </ion-select>
+      </ion-item>
 
-    <ion-item>
-      <ion-label>Status</ion-label>
-      <ion-select [(ngModel)]="form.status">
-        <ion-select-option value="Not started">Not started</ion-select-option>
-        <ion-select-option value="Active">Active</ion-select-option>
-        <ion-select-option value="Finished">Finished</ion-select-option>
-      </ion-select>
-    </ion-item>
+      <ion-item>
+        <ion-select formControlName="status" label="Status">
+          <ion-select-option value="Not started">Not started</ion-select-option>
+          <ion-select-option value="Active">Active</ion-select-option>
+          <ion-select-option value="Finished">Finished</ion-select-option>
+        </ion-select>
+      </ion-item>
 
-    <ion-item>
-      <ion-label>Priority</ion-label>
-      <ion-select [(ngModel)]="form.priority">
-        <ion-select-option value="low">Low</ion-select-option>
-        <ion-select-option value="medium">Medium</ion-select-option>
-        <ion-select-option value="high">High</ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
-
-  <ion-footer>
-    <ion-button expand="full" (click)="saveTask()">{{ task ? 'Save Changes' : 'Add Task' }}</ion-button>
-  </ion-footer>
+      <ion-item>
+        <ion-select formControlName="priority" label="Priority">
+          <ion-select-option value="low">Low</ion-select-option>
+          <ion-select-option value="medium">Medium</ion-select-option>
+          <ion-select-option value="high">High</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-button class="ion-margin-top" expand="block" shape="round" type="submit">{{ task ? 'Save Changes' : 'Add Task' }}</ion-button>
+  </form>
 </ion-content>

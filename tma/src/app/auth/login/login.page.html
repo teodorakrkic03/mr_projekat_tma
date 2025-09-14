@@ -11,11 +11,11 @@
         <ion-col sizeSm="8" offsetSm="2">
           <ion-item>
             <ion-label position="floating">Username</ion-label>
-            <ion-input type="text" formControlName="username"></ion-input>
+            <ion-input errorText="{{ getError('username') }}" type="text" formControlName="username"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Password</ion-label>
-            <ion-input type="password" formControlName="password"></ion-input>
+            <ion-input errorText="{{ getError('password') }}" type="password" formControlName="password"></ion-input>
           </ion-item>
           </ion-col>
       </ion-row>

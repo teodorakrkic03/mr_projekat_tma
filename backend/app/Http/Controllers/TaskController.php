@@ -48,7 +48,7 @@ class TaskController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), 422);
         }
 
         $task = Task::create([
@@ -123,7 +123,7 @@ class TaskController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), 422);
         }
 
         $task->name = $request->name;

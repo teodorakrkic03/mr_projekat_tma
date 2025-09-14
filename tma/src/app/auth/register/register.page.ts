@@ -13,6 +13,7 @@ export class RegisterPage implements OnInit {
   registerForm: FormGroup;
   isSubmitting = false;
   errorMessage: string | null = null;
+  errors: { [key: string]: string[] } = {}
 
   constructor( 
     private fb: FormBuilder,
@@ -24,7 +25,7 @@ export class RegisterPage implements OnInit {
       last_name: ['', [Validators.required, Validators.pattern(/[A-Z][a-z]+/)]],
       email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(10)]]
     });
   }
 
@@ -39,6 +40,7 @@ export class RegisterPage implements OnInit {
 
     this.isSubmitting = true;
     this.errorMessage = null;
+    this.errors = {};
 
     const { first_name, last_name, email, username, password } = this.registerForm.value;
 
@@ -49,9 +51,25 @@ export class RegisterPage implements OnInit {
       },
       error: (err) => {
         this.isSubmitting = false;
-        this.errorMessage = err.error?.message || 'Registration failed';
+        if (err.status === 422 && err.error) {
+          this.errors = err.error;
+        } else {
+          this.errorMessage = err.error?.message || 'Registration failed';
+        }
       }
     });
+  }
+
+  getError(field: string) {
+    const control = this.registerForm.get(field);
+    if (control?.touched && control?.errors) {
+      if (control.errors['required']) return 'This field is required';
+      if (control.errors['pattern']) return 'Invalid format';
+      if (control.errors['email']) return 'Invalid email';
+      if (control.errors['minlength']) return `Minimum length is ${control.errors['minlength'].requiredLength}`;
+    }
+    if (this.errors[field]?.length) return this.errors[field][0];
+    return null;
   }
 
 }

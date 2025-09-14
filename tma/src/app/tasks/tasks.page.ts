@@ -3,6 +3,7 @@ import { TasksService } from './tasks';
 import { Task } from '../models/task.model';
 import { ModalController } from '@ionic/angular';
 import { TaskModalComponent } from './task-modal/task-modal.component';
+import { TaskFilterModalComponent } from './task-filter-modal/task-filter-modal.component';
 @Component({
   selector: 'app-tasks',
   standalone: false,
@@ -11,9 +12,9 @@ import { TaskModalComponent } from './task-modal/task-modal.component';
 })
 export class TasksPage implements OnInit {
   tasks: Task[] = [];
+  filteredTasks: Task[] = [];
   loading = true;
   errorMessage: string | null = null;
-  private searchTerm: string = '';
 
   constructor(private tasksService:TasksService, private modalCtrl:ModalController) { }
 
@@ -27,12 +28,10 @@ export class TasksPage implements OnInit {
 
   fetchTasks() {
     this.loading = true;
-    const source$ = this.searchTerm
-      ? this.tasksService.searchTasks(this.searchTerm)
-      : this.tasksService.getTasks();
-    source$.subscribe({
+    this.tasksService.getTasks().subscribe({
       next: (tasks) => {
         this.tasks = tasks;
+        this.filteredTasks = tasks;
         this.loading = false;
       },
       error: (err) => {
@@ -42,9 +41,12 @@ export class TasksPage implements OnInit {
     });
   }
 
-  onSearch(event: any){
-    this.searchTerm = (event.target?.value || '').trim();
-    this.fetchTasks();
+  handleSearch(event: any) {
+    const query = event.target.value.toLowerCase();
+    this.filteredTasks = this.tasks.filter(task =>
+      task.name.toLowerCase().includes(query) ||
+      (task.description && task.description.toLowerCase().includes(query))
+    );
   }
 
   async openTaskModal(task?:Task){
@@ -61,10 +63,40 @@ export class TasksPage implements OnInit {
         } else{
           this.tasks.push(data);
         }
+        this.filteredTasks = [...this.tasks];
       }
     });
 
     await modal.present();
+  }
+
+  async openFilterModal() {
+    const modal = await this.modalCtrl.create({
+      component: TaskFilterModalComponent
+    })
+
+    modal.onDidDismiss().then(({ data }) => {
+      if(data){
+        this.applyFilters(data);
+      }
+    });
+
+    await modal.present();
+  }
+
+  applyFilters(filters:any){
+    this.loading = true;
+    this.tasksService.filterTasks(filters).subscribe({
+      next: (tasks) => {
+      this.tasks = tasks;
+      this.filteredTasks = tasks;
+      this.loading = false;
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Failed to filter tasks';
+        this.loading = false;
+      }
+    });
   }
 
 }

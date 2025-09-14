@@ -14,23 +14,23 @@
       <ion-col sizeSm="8" offsetSm="2">
         <ion-item>
           <ion-label position="floating">First name</ion-label>
-          <ion-input type="text" formControlName="first_name"></ion-input>
+          <ion-input errorText="{{ getError('first_name') }}" type="text" formControlName="first_name"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Last name</ion-label>
-          <ion-input type="text" formControlName="last_name"></ion-input>
+          <ion-input errorText="{{ getError('last_name') }}" type="text" formControlName="last_name"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Email</ion-label>
-          <ion-input type="Email" formControlName="email"></ion-input>
+          <ion-input errorText="{{ getError('email') }}" type="Email" formControlName="email"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Username</ion-label>
-          <ion-input type="text" formControlName="username"></ion-input>
+          <ion-input errorText="{{ getError('username') }}" type="text" formControlName="username"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Password</ion-label>
-          <ion-input type="password" formControlName="password"></ion-input>
+          <ion-input errorText="{{ getError('password') }}" type="password" formControlName="password"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>

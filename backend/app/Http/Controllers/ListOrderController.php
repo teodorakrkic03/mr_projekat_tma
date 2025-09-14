@@ -78,6 +78,14 @@ class ListOrderController extends Controller
             ->where('task_id',$task_id)
             ->delete();
         
+        $tasks = $list->tasks()->orderBy('num')->get();
+        foreach($tasks->values() as $index => $t){
+            DB::table('list_order')
+                ->where('task_list_id', $task_list_id)
+                ->where('task_id', $t->id)
+                ->update(['num' => $index + 1]);
+        }
+        
         return response()->json(['message'=>'Task removed from the list']);
     }
 }

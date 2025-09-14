@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>Filter</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="dismiss()">Close</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <ion-item>
+      <ion-select [(ngModel)]="filters.status" label="Status">
+        <ion-select-option value="Not started">Not started</ion-select-option>
+        <ion-select-option value="Active">Active</ion-select-option>
+        <ion-select-option value="Finished">Finished</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select [(ngModel)]="filters.priority" label="Priority">
+        <ion-select-option value="low">Low</ion-select-option>
+        <ion-select-option value="medium">Medium</ion-select-option>
+        <ion-select-option value="high">High</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select [(ngModel)]="filters.category_id" label="Category">
+        <ion-select-option *ngFor="let cat of categories" [value]="cat.id">
+          {{ cat.name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button class="ion-margin-top" expand="block" shape="round" (click)="apply()">Apply</ion-button>
+    <ion-button expand="block" shape="round" color="danger" (click)="clear()">Clear filters</ion-button>
+  </ion-content>

@@ -12,6 +12,7 @@ import { ListModalComponent } from './list-modal/list-modal.component';
 })
 export class ListsPage implements OnInit {
   lists: List[] = [];
+  filteredLists: List[] = [];
   loading = true;
   errorMessage: string | null = null;
 
@@ -30,6 +31,7 @@ export class ListsPage implements OnInit {
     this.listsService.getLists().subscribe({
       next: (lists) => {
         this.lists = lists.task_lists;
+        this.filteredLists = lists.task_lists;
         this.loading = false;
       },
       error: (err) => {
@@ -37,6 +39,13 @@ export class ListsPage implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  handleSearch(event: any) {
+    const query = event.target.value.toLowerCase();
+    this.filteredLists = this.lists.filter(list =>
+      list.name.toLowerCase().includes(query)
+    );
   }
 
   async openListModal() {

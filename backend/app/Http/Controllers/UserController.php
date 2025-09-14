@@ -43,7 +43,7 @@ class UserController extends Controller
         ]);
 
         if($validate->fails()){
-            return response()->json($validate->errors());
+            return response()->json($validate->errors(),422);
         }
 
         $user->first_name = $request->first_name;

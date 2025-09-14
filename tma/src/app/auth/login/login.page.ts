@@ -13,6 +13,7 @@ export class LoginPage implements OnInit {
   loginForm: FormGroup;
   isSubmitting = false;
   errorMessage: string | null = null;
+  errors: { [key: string]: string[] } = {}
 
   constructor(
     private fb: FormBuilder,
@@ -21,7 +22,7 @@ export class LoginPage implements OnInit {
   ) {
     this.loginForm = this.fb.group({
       username: ['',[Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required]]
     });
    }
 
@@ -46,9 +47,22 @@ export class LoginPage implements OnInit {
       },
       error: (err) => {
         this.isSubmitting = false;
-        this.errorMessage = err.error?.message || 'Login failed';
+        if (err.status === 422 && err.error) {
+          this.errors = err.error;
+        } else {
+          this.errorMessage = err.error?.message || 'Registration failed';
+        }
       },
     });
+  }
+
+  getError(field: string) {
+    const control = this.loginForm.get(field);
+    if (control?.touched && control?.errors) {
+      if (control.errors['required']) return 'This field is required';
+    }
+    if (this.errors[field]?.length) return this.errors[field][0];
+    return null;
   }
 
 }

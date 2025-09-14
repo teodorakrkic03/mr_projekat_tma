@@ -42,4 +42,9 @@ export class TasksService {
   deleteTask(taskId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${taskId}`, this.getHeaders());
   }
+
+  filterTasks(filters: any): Observable<Task[]> {
+    return this.http.post<{tasks: Task[]}>(`${this.apiUrl}/filter`, filters, this.getHeaders()).pipe(
+      map(res => res.tasks));
+  }
 }
