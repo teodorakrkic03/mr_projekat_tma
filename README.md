@@ -68,8 +68,9 @@ Frontend (Angular + Ionic)
 ## Instalacija i pokretanje
 
 **Kloniranje repozitorijuma**
-
+```
 git clone https://github.com/teodorakrkic03/mr_projekat_tma.git
+```
 
 1. Backend (Laravel)
 ```
