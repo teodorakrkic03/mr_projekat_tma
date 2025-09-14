@@ -93,7 +93,6 @@ export class TaskModalComponent  implements OnInit {
     if (this.form.get(field)?.touched && this.form.get(field)?.errors) {
       const errors = this.form.get(field)?.errors!;
       if (errors['required']) return 'This field is required';
-      if (errors['maxlength']) return `Max length is ${errors['maxlength'].requiredLength}`;
     }
     if (this.errors[field]?.length) return this.errors[field][0];
     return null;
